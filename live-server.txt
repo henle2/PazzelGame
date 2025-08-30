@@ -1,0 +1,2 @@
+cd "C:\Users\Lenovo\Desktop\של חן מדעי המחשב\למידה לקורות חיים\pazzel\client"
+npm run dev
