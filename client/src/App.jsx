@@ -53,10 +53,10 @@ const PuzzlePiece = ({ img, x, y, width, height }) => {
 function App() {
   const [image, setImage] = useState(null);
   const [puzzlePieces, setPuzzlePieces] = useState([]);
-  const pieces = 4; // סה"כ חלקים
-  const rowsCols = Math.sqrt(pieces); // שורש ריבועי (3x3 במקרה הזה)
-  const pieceSize = 300 / rowsCols; // גודל כל חתיכה (רוחב וגם גובה)
+  const [rowsCols, setRowsCols] = useState(3); // ברירת מחדל: 3x3
 
+  const pieceSize = 300 / rowsCols; // גודל כל חתיכה (רוחב וגם גובה)
+  console.log(rowsCols);
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -86,9 +86,33 @@ function App() {
 
       {image && (
         <div>
-          <button onClick={generatePuzzle}>Generate Puzzle</button>
+          {/* Dropdown לבחירת רמת קושי */}
+          <label htmlFor="difficulty">בחר רמת קושי: </label>
+          <select
+            id="difficulty"
+            value={rowsCols}
+            onChange={(e) => setRowsCols(parseInt(e.target.value))}
+          >
+            <option value={3}>קל (3x3)</option>
+            <option value={4}>בינוני (4x4)</option>
+            <option value={6}>קשה (6x6)</option>
+          </select>
 
-          <div>
+          <button onClick={generatePuzzle} style={{ marginLeft: "10px" }}>
+            Generate Puzzle
+          </button>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: `repeat(${rowsCols}, ${pieceSize}px)`,
+              gridTemplateRows: `repeat(${rowsCols}, ${pieceSize}px)`,
+              width: `${pieceSize * rowsCols}px`,
+              height: `${pieceSize * rowsCols}px`,
+              marginTop: "20px",
+              border: "2px solid black",
+            }}
+          >
             {puzzlePieces.map((piece, index) => (
               <PuzzlePiece
                 key={index}
